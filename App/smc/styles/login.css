@@ -1,33 +1,35 @@
 @charset "UTF-8";
 
-body {background-color: black;}
+body {
+	background-color: #000000db;
+}
 
-table{
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 15px;
-  margin: 0 auto;
-  width: 120%;
-  height: 20%;
-  margin-left:auto; 
-  margin-right:auto;
-  vertical-align: middle;
-  background-color: white;
-  box-shadow: 5px 5px 5px 5px #888888;
+table {
+	text-align: center;
+	border: 1px solid black;
+	border-radius: 15px;
+	margin: 0 auto;
+	width: 120%;
+	height: 20%;
+	margin-left: auto;
+	margin-right: auto;
+	vertical-align: middle;
+	background-color: white;
+	box-shadow: 5px 5px 5px 5px #888888;
 }
 
 div.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
 }
 
 div.heading {
 	font-size: 30px;
-	text-align:center;
-	color : white;
+	text-align: center;
+	color: white;
 	font-family: "Times New Roman", Times, serif;
-	position:fixed;
-	width : 100%;
+	position: fixed;
+	width: 100%;
 }
