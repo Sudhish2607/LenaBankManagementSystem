@@ -81,10 +81,15 @@ curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($client);
 
 $result = json_decode($response);
-copy('http://localhost:8001/app/smc/security/imageToTransfer.png', 'imageToTransfer.png');
+copy('http://localhost:8001/app/smc/security/imageToTransfer.png.smc', 'imageToTransfer.png.smc');
 
-$python = `python level_2_steganography.py "initialImage.JPG" "imageToTransfer.png" "snapshot.txt"`;
-$level1 = `python level_1_ceasar.py "snapshot.txt"`;
+
+$level3 = `python level_3_aes.py "decrypt" "./imageToTransfer.png"`;
+$level2 = `python level_2_steganography.py "./initialImage.JPG" "./imageToTransfer.png" "snapshot.txt" "decrypt"`;
+$level1 = `python level_1_ceasar.py "snapshot.txt" "decrypt"`;
+
+
+
 $dataFile = fopen("snapshot.txt", "r") or die("Unable to open file!");
 $data = fread($dataFile, filesize("snapshot.txt"));
 fclose($dataFile);
@@ -126,15 +131,15 @@ $json_resp = json_decode($data, true);
 
 
 			<h3 class="headings">Address Line 1</h3>
-			<p><?=$json_resp['A1']?></p>
+			<p><?=$json_resp['D1']?></p>
 			<br />
 
 			<h3 class="headings">Address Line 2</h3>
-			<p><?=$json_resp['A2']?></p>
+			<p><?=$json_resp['D2']?></p>
 			<br />
 
 			<h3 class="headings">City</h3>
-			<p><?=$json_resp['CT']?></p>
+			<p><?=$json_resp['TI']?></p>
 			<br />
 
 			<h3 class="headings">State</h3>
@@ -142,18 +147,18 @@ $json_resp = json_decode($data, true);
 			<br />
 
 			<h3 class="headings">Zip Code</h3>
-			<p><?=$json_resp['ZIP']?></p>
+			<p><?=$json_resp['IP']?></p>
 			<br />
 
 			<h3 class="headings">Registered Contact No</h3>
-			<p><?=$json_resp['CN1']?></p>
+			<p><?=$json_resp['#1']?></p>
 			<br />
 			<h3 class="headings">Alternate Contact No</h3>
-			<p><?=$json_resp['CN2']?></p>
+			<p><?=$json_resp['#2']?></p>
 			<br />
 
 			<h3 class="headings">Date of birth</h3>
-			<p><?=$json_resp['DOB']['dyte']?></p>
+			<p><?=$json_resp['DO']['dyte']?></p>
 			<br />
 			<table border="1">
 
@@ -165,7 +170,7 @@ $json_resp = json_decode($data, true);
 				<br />
 
 				<h3 class="headings">Date of birth</h3>
-				<p><?=$json_resp['AOD']['date']?></p>
+				<p><?=$json_resp['OD']['dyte']?></p>
 				<br />
 
 
