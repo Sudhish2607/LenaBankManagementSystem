@@ -79,10 +79,14 @@ curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($client);
 
 $result = json_decode($response);
-copy('http://localhost:8001/app/smc/security/imageToTransfer.png', 'imageToTransfer.png');
+copy('http://localhost:8001/app/smc/security/imageToTransfer.png.smc', 'imageToTransfer.png.smc');
 
-$python = `python level_2_steganography.py "initialImage.JPG" "imageToTransfer.png" "snapshot.txt"`;
-$level1 = `python level_1_ceasar.py "snapshot.txt"`;
+
+$level3 = `python level_3_aes.py "decrypt" "./imageToTransfer.png"`;
+$level2 = `python level_2_steganography.py "./initialImage.JPG" "./imageToTransfer.png" "snapshot.txt" "decrypt"`;
+$level1 = `python level_1_ceasar.py "snapshot.txt" "decrypt"`;
+
+
 $dataFile = fopen("snapshot.txt", "r") or die("Unable to open file!");
 $data = fread($dataFile, filesize("snapshot.txt"));
 fclose($dataFile);
@@ -100,8 +104,16 @@ $json_resp = json_decode($data, true);
 				method="POST">
 				<li><button type="submit" name="submit" class="btn btn-default"
 						value="customerDetails" style="font-family: cursive;">My Details</button></li>
+			</form>
+			<form class="form-inline"
+				action="http://localhost:7001/App/smc/security/accountDetails.php"
+				method="POST">
 				<li><button type="submit" name="submit" class="btn btn-default"
 						value="accountDetails" style="font-family: cursive;">My Account</button></li>
+			</form>
+			<form class="form-inline"
+				action="http://localhost:7001/App/smc/security/cardDetails.php"
+				method="POST">
 				<li><button type="submit" name="submit" class="btn btn-default"
 						value="cardDetails" style="font-family: cursive;">My Cards</button></li>
 			</form>
@@ -111,23 +123,23 @@ $json_resp = json_decode($data, true);
 			<p><?=$json_resp['F_N']?> <?=$json_resp['M_N']?> <?=$json_resp['L_N']?></p>
 			<br />
 			<h3 class="headings">IFSC Code</h3>
-			<p><?=$json_resp['B_N']?></p>
+			<p><?=$json_resp['IFS']?></p>
 			<br />
 
 			<h3 class="headings">Zone</h3>
-			<p><?=$json_resp['Z']?></p>
+			<p><?=$json_resp['O']?></p>
 			<br />
 
 			<h3 class="headings">Address Line 1</h3>
-			<p><?=$json_resp['A1']?></p>
+			<p><?=$json_resp['D1']?></p>
 			<br />
 
 			<h3 class="headings">Address Line 2</h3>
-			<p><?=$json_resp['A2']?></p>
+			<p><?=$json_resp['D2']?></p>
 			<br />
 
 			<h3 class="headings">City</h3>
-			<p><?=$json_resp['CTY']?></p>
+			<p><?=$json_resp['TI']?></p>
 			<br />
 
 			<h3 class="headings">State</h3>
@@ -135,11 +147,11 @@ $json_resp = json_decode($data, true);
 			<br />
 
 			<h3 class="headings">Zip Code</h3>
-			<p><?=$json_resp['ZIP']?></p>
+			<p><?=$json_resp['IP']?></p>
 			<br />
 
 			<h3 class="headings">Bank Contact No</h3>
-			<p><?=$json_resp['BC']?></p>
+			<p><?=$json_resp['#']?></p>
 			<br />
 
 			<h3 class="headings">MICR Code</h3>
@@ -154,17 +166,19 @@ $json_resp = json_decode($data, true);
     
     <th>Type</th>
     <th>Minimum Balace</th>
+    <th>Current Balace</th>
     <th>Interest Rate</th>
     <th>Max Transaction Allowed</th>
     </tr>';
-    $card = $json_resp['AC_INF'];
+    $card = $json_resp['T_INF'];
     foreach ($card as $eachC) {
         echo '<tr>';
-        echo '<td>' . $eachC['AC_N'] . '</td>';
+        echo '<td>' . $eachC['T_N'] . '</td>';
         echo '<td>' . $eachC['DT_OP']['date'] . '</td>';
         
         echo '<td>' . $eachC['T'] . '</td>';
-        echo '<td>' . $eachC['MIN_BAL'] . '</td>';
+        echo '<td>' . $eachC['MIN'] . '</td>';
+        echo '<td>' . $eachC['BL'] . '</td>';
         
         echo '<td>' . $eachC['I'] . '</td>';
         echo '<td>' . $eachC['MT'] . '</td>';

@@ -32,7 +32,7 @@ class Steganography:
         snapshot_file.close()
         steganographic_image_object = lsb.hide(self.input_image_file_path, secret_text)
         steganographic_image_object.save(self.steganographic_image_file_path)
-#         os.remove(self.secret_text_file_path)
+        os.remove(self.secret_text_file_path)
 #         os.remove(self.input_image_file_path)
         return self.steganographic_image_file_path
 
@@ -45,6 +45,7 @@ class Steganography:
         :return:    revealed secret text
         """
         decrypted_secret_text = lsb.reveal(self.steganographic_image_file_path)
+        print(decrypted_secret_text)
         snapshot_file = open(self.secret_text_file_path, "w")
         snapshot_file.write(decrypted_secret_text)
         snapshot_file.close()
@@ -57,11 +58,18 @@ def main():
         This is a main function which helps in understanding how this package could be used.
         :return: None
         """
+        print('1')
+        print('2')
         input_image_file_path = sys.argv[1]
         steganographic_image_file_path = sys.argv[2]
         secret_text_file_path = sys.argv[3]
         level2 = Steganography(input_image_file_path, steganographic_image_file_path, secret_text_file_path + ".smc")
+        level2 = Steganography(input_image_file_path, steganographic_image_file_path, secret_text_file_path + ".smc")
         level2.decrypt()
+#         print('Done'+secret_text_file_path)
+#         obj = Steganography()
+#         obj.encrypt()
+#         revealed_secret_text = level2.decrypt()
         print('done')
 
 
